@@ -1,10 +1,11 @@
-//i think i am going to start over, its such a mess at this point i dont know whats broken and whats needed and what isnt
+//huge thank you to mark for helping me get this working and encouraging me to not start from scratch
 
 var values = {};
 
 $(document).ready(function(){
-    clicks();
+    // clicks();
     clearStuff();
+    $('.math').on('click', setOp);
 
     $('#calc').on('submit', function(event){
         console.log('submit works');
@@ -18,72 +19,36 @@ $(document).ready(function(){
     });
 });
 
-//set click listeners
-// function clicks(){
-//     $('.container').on('click', '.add', add);
-//     $('.container').on('click', '.subtract', subtract);
-//     $('.container').on('click', '.divide', divide);
-//     $('.container').on('click', '.multiply', multiply);
-//     $('.clear').on('click', clearStuff);
-// }
+function setOp(){
+    values.math = $(this).data('id');
+    console.log(values.math);
+}
 
 //append to the dom
 function appendDom(data){
     $('.result').empty();
-    $('.result').append('<p>'+ data + '</p>');
+    if(data.sum != undefined){
+    $('.result').append('<p class="sum">'+ data.sum + '</p>');
+} else if(data.diff != undefined){
+    $('.result').append('<p class="diff">' + data.diff + '</p>');
+} else if(data.prod != undefined){
+    $('.result').append('<p class="prod">' + data.prod + '</p>');
+}else if(data.div != undefined){
+    $('.result').append('<p class="div">' + data.div + '</p>');
+}
+
+
 }
 
 //add ajax call function
 function doMath(object){
-    console.log('add works');
+    console.log('math works');
     $.ajax({
         type: 'POST',
         url: '/math/' + object.math,
         data: object,
         success: function(response){
             console.log('add', response);
-            appendDom(response);
-        }
-    });
-}
-
-//subtract ajax call function
-function subtract(data){
-    console.log('subtract works');
-    $.ajax({
-        type: 'POST',
-        url: '/subtract',
-        data: data,
-        success: function(response){
-            console.log('subtract', response);
-            appendDom(response);
-        }
-    });
-}
-
-//multiply ajax call function
-function multiply(data){
-    console.log('muliply works');
-    $.ajax({
-        type: 'POST',
-        url: '/multiply',
-        data: data,
-        success: function(response){
-            console.log('multiply', response);
-            appendDom(response);
-        }
-    });
-}
-
-//multiply ajax call function
-function divide(data){
-    console.log('divide works');
-    $.ajax({
-        type: 'POST',
-        url: '/divide',
-        data: data,
-        success: function(response){
-            console.log('divide', response);
             appendDom(response);
         }
     });
